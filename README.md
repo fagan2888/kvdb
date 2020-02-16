@@ -7,34 +7,7 @@
 	class Database{
 		Store sets;
 		Store dels;
-		Appender appender;
-	}
-
-	class Appender{
-		Map cache;
 		Index lastIndex;
-		Item items[];
-	}
-
-	class Store{
-		Range ranges[]; // sorted by range.begin.index
-	}
-
-	class Range {
-		Key begin;
-		Key end;
-		Item items[];
-	}
-
-	class Key{
-		Slice data;
-		Index index;
-		int compare();
-	}
-
-	class Item{
-		Key key;
-		Slice val;
 	}
 
 ## Operation
@@ -54,10 +27,10 @@
 		return val;
 	}
 	ranges = select * from ranges where cover(key)
-	ranges.order_by(begin.index).desc();
+	res = null;
 	for(range in ranges){
 		if(val = range.get(key)){
-			return val;
+			res = max(res, val);
 		}
 	}
 
