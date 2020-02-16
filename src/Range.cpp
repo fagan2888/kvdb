@@ -3,52 +3,54 @@
 
 namespace kvdb{
 
+static std::string empty_str;
+
 Range::Range(const std::map<std::string, Item> &mm){
 	for(auto p : mm){
 		items.push_back(p.second);
 		// printf("    %s\n", p.second.key.c_str());
 	}
-	if(!items.empty()){
-		start = items[0].key;
-		end = items[items.size()-1].key;
-	}
 }
 
-Range::Range(const std::vector<Item> &sorted){
+Range::Range(const std::list<Item> &sorted){
 	items = sorted;
-	if(!items.empty()){
-		start = items[0].key;
-		end = items[items.size()-1].key;
-	}
 }
 
 int Range::size() const{
 	return (int)items.size();
 }
 
+const std::string& Range::start(){
+	if(!items.empty()){
+		return items.front().key;
+	}
+	return empty_str;
+}
 
-inline static bool item_cmp_func(const Item &a, const Item &b){
-	return a.key < b.key;
+const std::string& Range::end(){
+	if(!items.empty()){
+		return items.back().key;
+	}
+	return empty_str;
 }
 
 void Range::get(const std::string &key, std::string *val, uint64_t *seq){
 	*seq = 0;
-	if(start > key || end < key){
+	if(start() > key || end() < key){
 		return;
 	}
 
-	Item item;
-	item.key = key;
-	// TODO: 因为是存储在硬盘上的, 所以不能用二分法. 除非已经加载到内存.
-	auto it = std::lower_bound(items.begin(), items.end(), item, item_cmp_func);
-	if(it == items.end()){
-		return;
-	}
-
-	Item &f = *it;
-	if(f.key == key){
-		*val = f.val;
-		*seq = f.seq;
+	for(auto &i : items){
+		int c = i.key.compare(key);
+		if(c < 0){
+			continue;
+		}else if(c > 0){
+			break;
+		}else{
+			*val = i.val;
+			*seq = i.seq;
+			break;
+		}
 	}
 }
 

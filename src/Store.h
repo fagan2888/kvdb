@@ -2,6 +2,7 @@
 #define KVDB_STORE_H_
 
 #include <vector>
+#include <list>
 #include <map>
 #include <string>
 #include "Item.h"
@@ -24,7 +25,7 @@ private:
 
 	std::map<std::string, Item> cache;
 	// append only
-	std::vector<Item> items;
+	std::list<Item> items;
 
 	// TODO: interval tree, range tree
 	std::vector<Range *> ranges;

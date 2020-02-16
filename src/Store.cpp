@@ -15,7 +15,7 @@ void Store::set(const std::string &key, const std::string &val, uint64_t seq){
 	if(items.size() >= MAX_WAL_ITEMS || cache.size() >= MAX_RANGE_ITEMS){
 		Range *r = new Range(cache);
 		ranges.push_back(r);
-		log_debug("new range, s:%s, e:%s, c:%d", r->start.c_str(), r->end.c_str(), r->size());
+		log_debug("new range, s:%s, e:%s, c:%d", r->start().c_str(), r->end().c_str(), r->size());
 
 		items.clear();
 		cache.clear();
@@ -50,22 +50,22 @@ void Store::compact(){
 	
 	log_debug("old ranges:");
 	for(auto r : ranges){
-		log_debug("    s:%s, e:%s, c:%d", r->start.c_str(), r->end.c_str(), r->size());
+		log_debug("    s:%s, e:%s, c:%d", r->start().c_str(), r->end().c_str(), r->size());
 	}
 
 	ranges.swap(new_ranges);
 	std::sort(ranges.begin(), ranges.end(), [](Range *a, Range *b){
-		return a->start < b->start;
+		return a->start() < b->start();
 	});
 	
 	log_debug("new ranges:");
 	for(auto r : ranges){
-		log_debug("    s:%s, e:%s, c:%d", r->start.c_str(), r->end.c_str(), r->size());
+		log_debug("    s:%s, e:%s, c:%d", r->start().c_str(), r->end().c_str(), r->size());
 	}
 }
 
 Range* Store::compact_write_range(std::map<std::string, Item> *mm){
-	std::vector<Item> sorted;
+	std::list<Item> sorted;
 	for(auto it = mm->begin(); it != mm->end(); it ++){
 		sorted.push_back(it->second);
 		if(sorted.size() == MAX_RANGE_ITEMS){

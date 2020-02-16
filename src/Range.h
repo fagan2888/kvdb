@@ -2,7 +2,7 @@
 #define KVDB_RANGE_H_
 
 #include <string>
-#include <vector>
+#include <list>
 #include <map>
 #include "Item.h"
 
@@ -11,15 +11,16 @@ namespace kvdb{
 // sst
 class Range{
 public:
-	std::string start;
-	std::string end;
-	// sorted by Item.key
-	std::vector<Item> items;
+	const std::string& start();
+	const std::string& end();
+	int size() const;
+
+	// sorted by Item.key, but not for random acess
+	std::list<Item> items;
 
 	Range(const std::map<std::string, Item> &mm);
-	Range(const std::vector<Item> &sorted);
+	Range(const std::list<Item> &sorted);
 
-	int size() const;
 	void get(const std::string &key, std::string *val, uint64_t *index);
 
 private:
