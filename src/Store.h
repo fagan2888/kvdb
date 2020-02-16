@@ -15,7 +15,12 @@ public:
 	void get(const std::string &key, std::string *val, uint64_t *index);
 
 private:
+	void compact();
+	Range* compact_write_range(std::map<std::string, Item> *mm);
+	
 	const static int MAX_WAL_ITEMS = 100;
+	const static int MAX_RANGE_ITEMS = 100;
+	const static int COMPACT_BUFFER_SIZE = MAX_RANGE_ITEMS * 3;
 
 	std::map<std::string, Item> cache;
 	// append only

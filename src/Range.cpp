@@ -14,6 +14,14 @@ Range::Range(const std::map<std::string, Item> &mm){
 	}
 }
 
+Range::Range(const std::vector<Item> &sorted){
+	items = sorted;
+	if(!items.empty()){
+		start = items[0].key;
+		end = items[items.size()-1].key;
+	}
+}
+
 int Range::size() const{
 	return (int)items.size();
 }
