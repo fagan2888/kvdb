@@ -12,7 +12,7 @@ void Store::set(const std::string &key, const std::string &val, uint64_t index){
 	items.push_back(item);
 	cache[item.key] = item;
 
-	if(items.size() >= MAX_WAL_ITEMS){
+	if(items.size() >= MAX_WAL_ITEMS || cache.size() >= MAX_RANGE_ITEMS){
 		Range *r = new Range(cache);
 		ranges.push_back(r);
 		log_debug("new range, s:%s, e:%s, c:%d", r->start.c_str(), r->end.c_str(), r->size());
@@ -24,15 +24,7 @@ void Store::set(const std::string &key, const std::string &val, uint64_t index){
 	}
 }
 
-static bool range_cmp_func(Range *a, Range *b){
-	return a->start < b->start;
-}
-
 void Store::compact(){
-	if(ranges.size() < 3){
-		return;
-	}
-	
 	std::vector<Range *> new_ranges;
 	std::map<std::string, Item> mm;
 	for(auto r : ranges){
@@ -62,7 +54,9 @@ void Store::compact(){
 	}
 
 	ranges.swap(new_ranges);
-	std::sort(ranges.begin(), ranges.end(), range_cmp_func);
+	std::sort(ranges.begin(), ranges.end(), [](Range *a, Range *b){
+		return a->start < b->start;
+	});
 	
 	log_debug("new ranges:");
 	for(auto r : ranges){
@@ -82,11 +76,7 @@ Range* Store::compact_write_range(std::map<std::string, Item> *mm){
 		mm->erase(item.key);
 	}
 	
-	Range *range = NULL;
-	if(sorted.size() > 0){
-		range = new Range(sorted);
-	}
-	return range;
+	return new Range(sorted);
 }
 
 void Store::get(const std::string &key, std::string *val, uint64_t *index){

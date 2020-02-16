@@ -35,7 +35,7 @@ int main(int argc, char **argv){
 	{
 		double etime = microtime();
 		double ts = etime - stime + 0.0000001;
-		log_debug("write qps: %d", (int)(10000/ts));
+		log_debug("write qps: %8d", (int)(10000/ts));
 	}
 
 	stime = microtime();
@@ -57,7 +57,7 @@ int main(int argc, char **argv){
 	{
 		double etime = microtime();
 		double ts = etime - stime + 0.0000001;
-		log_debug("read qps: %d", (int)(10000/ts));
+		log_debug("read qps:  %8d", (int)(10000/ts));
 	}
 
 	return 0;
