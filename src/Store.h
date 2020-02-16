@@ -15,6 +15,8 @@ public:
 	void get(const std::string &key, std::string *val, uint64_t *index);
 
 private:
+	const static int MAX_WAL_ITEMS = 100;
+
 	std::map<std::string, Item> cache;
 	// append only
 	std::vector<Item> items;

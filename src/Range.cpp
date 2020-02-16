@@ -20,6 +20,9 @@ int Range::size() const{
 
 void Range::get(const std::string &key, std::string *val, uint64_t *index){
 	*index = 0;
+	if(start > key || end < key){
+		return;
+	}
 
 	Item item;
 	item.key = key;
