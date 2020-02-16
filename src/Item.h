@@ -6,20 +6,10 @@
 namespace kvdb{
 
 struct Item{
-	uint64_t index;
+	uint64_t seq;
 	std::string key;
 	std::string val;
 };
-
-inline static bool operator < (const Item &a, const Item &b){
-	if(a.key < b.key){
-		return true;
-	// }else if(a.key == b.key){
-		// return a.index < b.index;
-	}else{
-		return false;
-	}
-}
 
 }; // end namespace kvdb
 

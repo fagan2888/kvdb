@@ -26,15 +26,20 @@ int Range::size() const{
 	return (int)items.size();
 }
 
-void Range::get(const std::string &key, std::string *val, uint64_t *index){
-	*index = 0;
+
+inline static bool item_cmp_func(const Item &a, const Item &b){
+	return a.key < b.key;
+}
+
+void Range::get(const std::string &key, std::string *val, uint64_t *seq){
+	*seq = 0;
 	if(start > key || end < key){
 		return;
 	}
 
 	Item item;
 	item.key = key;
-	auto it = std::lower_bound(items.begin(), items.end(), item);
+	auto it = std::lower_bound(items.begin(), items.end(), item, item_cmp_func);
 	if(it == items.end()){
 		return;
 	}
@@ -42,7 +47,7 @@ void Range::get(const std::string &key, std::string *val, uint64_t *index){
 	Item &f = *it;
 	if(f.key == key){
 		*val = f.val;
-		*index = f.index;
+		*seq = f.seq;
 	}
 }
 
