@@ -39,6 +39,7 @@ void Range::get(const std::string &key, std::string *val, uint64_t *seq){
 
 	Item item;
 	item.key = key;
+	// TODO: 因为是存储在硬盘上的, 所以不能用二分法. 除非已经加载到内存.
 	auto it = std::lower_bound(items.begin(), items.end(), item, item_cmp_func);
 	if(it == items.end()){
 		return;
