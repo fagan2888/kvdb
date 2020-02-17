@@ -16,6 +16,9 @@ public:
 	void get(const std::string &key, std::string *val, uint64_t *index);
 
 private:
+    Store(const Store&);
+    void operator=(const Store&);
+
 	void compact();
 	Range* compact_write_range(std::map<std::string, Item> *mm);
 	

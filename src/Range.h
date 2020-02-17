@@ -25,6 +25,8 @@ public:
 
 private:
 	Range();
+    Range(const Range&);
+    void operator=(const Range&);
 };
 
 }; // end namespace kvdb
