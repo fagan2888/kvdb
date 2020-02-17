@@ -25,7 +25,7 @@ void Store::set(const std::string &key, const std::string &val, uint64_t seq){
 }
 
 void Store::compact(){
-	std::vector<Range *> new_ranges;
+	std::vector<Range *> tmp_ranges;
 	std::map<std::string, Item> mm;
 	for(auto r : ranges){
 		for(auto it = r->items.begin(); it != r->items.end(); it++){
@@ -39,13 +39,13 @@ void Store::compact(){
 			mm[item.key] = item;
 			if(mm.size() == COMPACT_BUFFER_SIZE){
 				Range *nr = compact_write_range(&mm);
-				new_ranges.push_back(nr);
+				tmp_ranges.push_back(nr);
 			}
 		}
 	}
 	while(!mm.empty()){
 		Range *nr = compact_write_range(&mm);
-		new_ranges.push_back(nr);
+		tmp_ranges.push_back(nr);
 	}
 	
 	log_debug("old ranges:");
@@ -53,10 +53,13 @@ void Store::compact(){
 		log_debug("    s:%s, e:%s, c:%d", r->start().c_str(), r->end().c_str(), r->size());
 	}
 
-	ranges.swap(new_ranges);
+	ranges.swap(tmp_ranges);
 	std::sort(ranges.begin(), ranges.end(), [](Range *a, Range *b){
 		return a->start() < b->start();
 	});
+	for(auto r : tmp_ranges){
+		delete r;
+	}
 	
 	log_debug("new ranges:");
 	for(auto r : ranges){
