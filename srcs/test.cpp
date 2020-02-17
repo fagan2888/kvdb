@@ -1,7 +1,7 @@
-#include "util/log.h"
-#include "Store.h"
 #include <map>
 #include <string>
+#include "util/log.h"
+#include "store.h"
 
 using namespace kvdb;
 

@@ -5,8 +5,8 @@
 #include <list>
 #include <map>
 #include <string>
-#include "Item.h"
-#include "Range.h"
+#include "item.h"
+#include "range.h"
 
 namespace kvdb{
 

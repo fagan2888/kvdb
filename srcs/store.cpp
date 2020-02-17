@@ -1,4 +1,4 @@
-#include "Store.h"
+#include "store.h"
 #include "util/log.h"
 
 namespace kvdb{
