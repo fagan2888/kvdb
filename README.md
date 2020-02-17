@@ -17,16 +17,6 @@
 
 优化方向就是, 当同一个桶中的连续 key 被删除时, 需要尽可能快地将它们从硬盘上真正的清除.
 
-## Data Structure
-
-将 del 和 set 分开存储, 避免 seek 的时候, 需要跳过大量 del 的情况(http://www.ideawu.net/blog/archives/1083.html).
-
-	class Database{
-		Store sets;
-		Store dels;
-		Index lastIndex;
-	}
-
 ## Operation
 
 ### set(key, val)/del
