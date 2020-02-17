@@ -12,6 +12,7 @@ namespace kvdb{
 
 class Store{
 public:
+	Store(){}
 	void set(const std::string &key, const std::string &val, uint64_t index);
 	void get(const std::string &key, std::string *val, uint64_t *index);
 
