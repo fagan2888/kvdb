@@ -27,6 +27,7 @@ private:
 	const static int MAX_RANGE_ITEMS = 100;
 	const static int COMPACT_BUFFER_SIZE = MAX_RANGE_ITEMS * 3;
 
+	// mm: mutable memtable, imm: immutable memtable
 	std::map<std::string, Item> cache;
 	// append only
 	std::list<Item> items;
