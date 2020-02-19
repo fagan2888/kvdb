@@ -3,7 +3,7 @@
 
 namespace kvdb{
 
-void Store::set(const std::string &key, const std::string &val, uint64_t seq){
+void Store::set(const std::string &key, const std::string &val, int64_t seq){
 	Item item;
 	item.seq = seq;
 	item.key = key;
@@ -82,7 +82,7 @@ Range* Store::compact_write_range(std::map<std::string, Item> *mm){
 	return new Range(sorted);
 }
 
-void Store::get(const std::string &key, std::string *val, uint64_t *seq){
+void Store::get(const std::string &key, std::string *val, int64_t *seq){
 	*seq = 0;
 
 	auto it = cache.find(key);
@@ -95,7 +95,7 @@ void Store::get(const std::string &key, std::string *val, uint64_t *seq){
 
 	for(auto r : ranges){
 		std::string v;
-		uint64_t i;
+		int64_t i;
 		r->get(key, &v, &i);
 		if(i > *seq){
 			*val = v;

@@ -21,7 +21,7 @@ public:
 	Range(const std::map<std::string, Item> &mm);
 	Range(const std::list<Item> &sorted);
 
-	void get(const std::string &key, std::string *val, uint64_t *index);
+	void get(const std::string &key, std::string *val, int64_t *index);
 
 private:
 	Range();

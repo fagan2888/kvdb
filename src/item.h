@@ -6,7 +6,7 @@
 namespace kvdb{
 
 struct Item{
-	uint64_t seq;
+	int64_t seq;
 	std::string key;
 	std::string val;
 };

@@ -34,7 +34,7 @@ const std::string& Range::end(){
 	return empty_str;
 }
 
-void Range::get(const std::string &key, std::string *val, uint64_t *seq){
+void Range::get(const std::string &key, std::string *val, int64_t *seq){
 	*seq = 0;
 	if(start() > key || end() < key){
 		return;

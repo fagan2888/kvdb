@@ -14,7 +14,7 @@ static inline double microtime(){
 
 int main(int argc, char **argv){
 	double stime;
-	uint64_t index = 0;
+	int64_t index = 0;
 	Store store;
 
 	std::map<std::string, std::string> mm;
@@ -46,7 +46,7 @@ int main(int argc, char **argv){
 		std::string k = buf;
 		
 		std::string v;
-		uint64_t idx;
+		int64_t idx;
 		store.get(k, &v, &idx);
 		if(mm.count(k) > 0){
 			if(v != mm[k]){
